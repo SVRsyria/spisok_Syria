@@ -224,146 +224,95 @@
         <div class="sand-stripe"></div>
         
         <div class="stats-bar">
-            <div>🛡️ Общая численность: <span id="totalCount">12</span> чел.</div>
-            <div>✅ Боевая готовность: <span id="activeCount">10</span> чел.</div>
-            <div>⏸ В резерве: <span id="reserveCount">2</span> чел.</div>
+            <div>🛡️ Общая численность: <span id="totalCount">0</span> чел.</div>
+            <div>✅ Боевая готовность: <span id="activeCount">0</span> чел.</div>
+            <div>⏸ В резерве: <span id="reserveCount">0</span> чел.</div>
             <div>🌡️ Температура: +42°C</div>
         </div>
 
-        <!-- КОМАНДОВАНИЕ -->
         <div class="unit-section">
             <div class="unit-title">🎖️ КОМАНДОВАНИЕ 27-й САД</div>
-            <div id="commandList">
-                <div class="person-card" data-id="1">
-                    <div class="person-info">
-                        <h3>Флягин Григорий Валентинович</h3>
-                        <p>ВрИО Командира 27-й САД | Генерал-Майор</p>
-                        <p>В должности с: 24.12.2016 | Дата зачисления в дивизию: 24.12.2016</p>
-                    </div>
-                    <div class="status status-active">✅ Боевая готовность</div>
-                </div>
-            </div>
+            <div id="commandList"></div>
         </div>
 
-        <!-- 37-й СМЕШАННЫЙ АВИАЦИОННЫЙ ПОЛК -->
         <div class="unit-section">
             <div class="unit-title"><span class="unit-icon">🛩️</span> 37-й СМЕШАННЫЙ АВИАЦИОННЫЙ ПОЛК (САП)</div>
-            <div id="sap37List">
-                <div class="person-card" data-id="2">
-                    <div class="person-info">
-                        <h3>Соколов Дмитрий Петрович</h3>
-                        <p>Командир 37-го САП | Подполковник</p>
-                        <p>Бортовой: "Сокол-01" | Налёт: 850 часов | Тип ВС: Су-35С</p>
-                    </div>
-                    <div class="status status-active">✅ Боевая готовность</div>
-                </div>
-            </div>
+            <div id="sap37List"></div>
         </div>
 
-        <!-- 382-й ОТДЕЛЬНЫЙ БАТАЛЬОН МОРСКОЙ ПЕХОТЫ -->
         <div class="unit-section">
             <div class="unit-title"><span class="unit-icon">🪖</span> 382-й ОТДЕЛЬНЫЙ БАТАЛЬОН МОРСКОЙ ПЕХОТЫ (ОБМП)</div>
-            <div id="bmp382List">
-                <div class="person-card" data-id="3">
-                    <div class="person-info">
-                        <h3>Орлов Михаил Викторович</h3>
-                        <p>Командир 382-го ОБМП | Подполковник</p>
-                        <p>Рота морской пехоты | Вооружение: АК-12, РПГ-7</p>
-                    </div>
-                    <div class="status status-active">✅ Боевая готовность</div>
-                </div>
-            </div>
+            <div id="bmp382List"></div>
         </div>
 
-        <!-- 94-я БАТАРЕЯ БЕРЕГОВОЙ АРТИЛЛЕРИИ -->
         <div class="unit-section">
             <div class="unit-title"><span class="unit-icon">🎯</span> 94-я БАТАРЕЯ БЕРЕГОВОЙ АРТИЛЛЕРИИ (ББА)</div>
-            <div id="bba94List">
-                <div class="person-card" data-id="4">
-                    <div class="person-info">
-                        <h3>Беркут Андрей Николаевич</h3>
-                        <p>Командир 94-й ББА | Майор</p>
-                        <p>Орудия: 130-мм М-46 | Расчёт: 8 человек</p>
-                    </div>
-                    <div class="status status-reserve">⏸ В резерве</div>
-                </div>
-            </div>
+            <div id="bba94List"></div>
         </div>
 
-        <!-- ТАНКОВАЯ РОТА -->
         <div class="unit-section">
             <div class="unit-title"><span class="unit-icon">⚡</span> ТАНКОВАЯ РОТА</div>
-            <div id="tankList">
-                <div class="person-card" data-id="5">
-                    <div class="person-info">
-                        <h3>Волков Сергей Иванович</h3>
-                        <p>Командир танковой роты | Капитан</p>
-                        <p>Танки: Т-72Б3 (4 ед.) | Экипаж: 3 чел./танк</p>
-                    </div>
-                    <div class="status status-active">✅ Боевая готовность</div>
-                </div>
-            </div>
+            <div id="tankList"></div>
         </div>
 
-        <!-- АДМИН-ПАНЕЛЬ -->
         <div class="admin-panel" id="adminPanel">
-    <div style="text-align: center; margin-bottom: 20px;">
-        <input type="password" id="adminPassword" placeholder="Введите пароль администратора" style="padding: 10px; width: 300px;">
-        <button onclick="checkPassword()">Войти в админку</button>
-    </div>
-    
-    <div id="adminContent" style="display: none;">
-        <!-- Вся существующая админ-панель здесь -->
-            <h3>🔐 ПАНЕЛЬ УПРАВЛЕНИЯ КОМАНДОВАНИЯ</h3>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="personName">ФИО:</label>
-                    <input type="text" id="personName" placeholder="Иванов Иван Иванович">
-                </div>
-                <div class="form-group">
-                    <label for="personPosition">Должность:</label>
-                    <input type="text" id="personPosition" placeholder="Командир взвода">
-                </div>
-                <div class="form-group">
-                    <label for="personRank">Звание:</label>
-                    <input type="text" id="personRank" placeholder="Майор">
-                </div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <input type="password" id="adminPassword" placeholder="Введите пароль администратора" style="padding: 10px; width: 300px;">
+                <button onclick="checkPassword()">Войти в админку</button>
             </div>
             
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="personUnit">Подразделение:</label>
-                    <select id="personUnit">
-                        <option value="command">Командование 27-й САД</option>
-                        <option value="sap37">37-й Смешанный Авиационный Полк</option>
-                        <option value="bmp382">382-й Отдельный батальон Морской Пехоты</option>
-                        <option value="bba94">94-я Батарея Береговой Артиллерии</option>
-                        <option value="tank">Танковая рота</option>
-                    </select>
+            <div id="adminContent" style="display: none;">
+                <h3>🔐 ПАНЕЛЬ УПРАВЛЕНИЯ КОМАНДОВАНИЯ</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="personName">ФИО:</label>
+                        <input type="text" id="personName" placeholder="Иванов Иван Иванович">
+                    </div>
+                    <div class="form-group">
+                        <label for="personPosition">Должность:</label>
+                        <input type="text" id="personPosition" placeholder="Командир взвода">
+                    </div>
+                    <div class="form-group">
+                        <label for="personRank">Звание:</label>
+                        <input type="text" id="personRank" placeholder="Майор">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="personStatus">Статус:</label>
-                    <select id="personStatus">
-                        <option value="active">✅ Боевая готовность</option>
-                        <option value="reserve">⏸ В резерве</option>
-                        <option value="leave">✈️ В отпуске</option>
-                    </select>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="personUnit">Подразделение:</label>
+                        <select id="personUnit">
+                            <option value="command">Командование 27-й САД</option>
+                            <option value="sap37">37-й Смешанный Авиационный Полк</option>
+                            <option value="bmp382">382-й Отдельный батальон Морской Пехоты</option>
+                            <option value="bba94">94-я Батарея Береговой Артиллерии</option>
+                            <option value="tank">Танковая рота</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="personStatus">Статус:</label>
+                        <select id="personStatus">
+                            <option value="active">✅ Боевая готовность</option>
+                            <option value="reserve">⏸ В резерве</option>
+                            <option value="leave">✈️ В отпуске</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="personDetails">Дополнительно:</label>
+                        <input type="text" id="personDetails" placeholder="Налёт, вооружение, специализация">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="personDetails">Дополнительно:</label>
-                    <input type="text" id="personDetails" placeholder="Налёт, вооружение, специализация">
+                
+                <div class="controls">
+                    <button onclick="addPerson()">➕ ДОБАВИТЬ БОЙЦА</button>
+                    <button onclick="updateStats()">📊 ОБНОВИТЬ СТАТИСТИКУ</button>
+                    <button onclick="clearAll()" class="delete-btn">🗑️ ОЧИСТИТЬ ВСЕХ (кроме командования)</button>
                 </div>
-            </div>
-            
-            <div class="controls">
-                <button onclick="addPerson()">➕ ДОБАВИТЬ БОЙЦА</button>
-                <button onclick="updateStats()">📊 ОБНОВИТЬ СТАТИСТИКУ</button>
-                <button onclick="clearAll()" class="delete-btn">🗑️ ОЧИСТИТЬ ВСЕХ (кроме командования)</button>
-            </div>
-            
-            <div style="text-align: center; margin-top: 20px; color: #b08d57; font-size: 0.9rem;">
-                💡 Все данные сохраняются в вашем браузере. Для полного сброса очистите кэш.
+                
+                <div style="text-align: center; margin-top: 20px; color: #b08d57; font-size: 0.9rem;">
+                    💡 Все данные сохраняются в общей базе данных. Изменения видны всем пользователям.
+                </div>
             </div>
         </div>
 
@@ -371,13 +320,17 @@
             <p>27-я Смешанная Авиационная Дивизия | Сирия, Аллепо | 2016</p>
             <p>Для добавления в состав: заполните форму выше и нажмите "Добавить бойца"</p>
             <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">
-                Сайт работает полностью автономно.
+                Сайт работает с общей базой данных Supabase.
             </p>
         </footer>
     </div>
 
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
-        let personId = 6;
+        const SUPABASE_URL = 'https://kyxnkteujlntyhhcsnnz.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5eG5rdGV1amxudHloaGNzbm56Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2MjEwNTMsImV4cCI6MjA4MjE5NzA1M30.Fvwr4xFPkHd63GwZ9KRFVgSPlx6HLoF_hpfR6AwGCL4';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
         const unitContainers = {
             'command': 'commandList',
             'sap37': 'sap37List',
@@ -385,15 +338,81 @@
             'bba94': 'bba94List',
             'tank': 'tankList'
         };
-        const unitTitles = {
-            'command': 'Командование 27-й САД',
-            'sap37': '37-й Смешанный авиаполк',
-            'bmp382': '382-й Отдельный батальон морпехов',
-            'bba94': '94-я Батарея береговой артиллерии',
-            'tank': 'Танковая рота'
-        };
-
-        function addPerson() {
+        
+        async function loadFighters() {
+            const { data, error } = await supabase
+                .from('fighters')
+                .select('*')
+                .order('created_at', { ascending: true });
+            
+            if (error) {
+                console.error('Ошибка загрузки:', error);
+                return;
+            }
+            
+            Object.values(unitContainers).forEach(containerId => {
+                document.getElementById(containerId).innerHTML = '';
+            });
+            
+            data.forEach(fighter => {
+                addFighterToDOM(fighter);
+            });
+            
+            updateStats();
+        }
+        
+        function addFighterToDOM(fighter) {
+            const statusText = {
+                'active': '✅ Боевая готовность',
+                'reserve': '⏸ В резерве',
+                'leave': '✈️ В отпуске'
+            }[fighter.status] || '❓ Неизвестно';
+            
+            const statusClass = {
+                'active': 'status-active',
+                'reserve': 'status-reserve',
+                'leave': 'status-reserve'
+            }[fighter.status] || 'status-reserve';
+            
+            const personCard = document.createElement('div');
+            personCard.className = 'person-card';
+            personCard.dataset.id = fighter.id;
+            personCard.innerHTML = `
+                <div class="person-info">
+                    <h3>${fighter.name}</h3>
+                    <p>${fighter.position} | ${fighter.rank}</p>
+                    ${fighter.details ? `<p>${fighter.details}</p>` : ''}
+                </div>
+                <div class="status ${statusClass}">${statusText}</div>
+            `;
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '❌';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.style.padding = '5px 10px';
+            deleteBtn.style.fontSize = '0.8rem';
+            deleteBtn.style.marginLeft = '10px';
+            deleteBtn.onclick = async function() {
+                if (confirm(`Удалить ${fighter.name} из состава?`)) {
+                    const { error } = await supabase
+                        .from('fighters')
+                        .delete()
+                        .eq('id', fighter.id);
+                    
+                    if (!error) {
+                        personCard.remove();
+                        updateStats();
+                    } else {
+                        alert('Ошибка удаления: ' + error.message);
+                    }
+                }
+            };
+            personCard.querySelector('.person-info').appendChild(deleteBtn);
+            
+            document.getElementById(unitContainers[fighter.unit]).appendChild(personCard);
+        }
+        
+        async function addPerson() {
             const name = document.getElementById('personName').value.trim();
             const position = document.getElementById('personPosition').value.trim();
             const rank = document.getElementById('personRank').value.trim();
@@ -406,55 +425,36 @@
                 return;
             }
             
-            const statusText = {
-                'active': '✅ Боевая готовность',
-                'reserve': '⏸ В резерве',
-                'leave': '✈️ В отпуске',
-            }[status];
+            const { data, error } = await supabase
+                .from('fighters')
+                .insert([
+                    {
+                        name: name,
+                        position: position,
+                        rank: rank,
+                        unit: unit,
+                        status: status,
+                        details: details
+                    }
+                ])
+                .select();
             
-            const statusClass = {
-                'active': 'status-active',
-                'reserve': 'status-reserve',
-                'leave': 'status-reserve',
-            }[status];
+            if (error) {
+                alert('Ошибка добавления: ' + error.message);
+                return;
+            }
             
-            const personCard = document.createElement('div');
-            personCard.className = 'person-card';
-            personCard.dataset.id = personId++;
-            personCard.innerHTML = `
-                <div class="person-info">
-                    <h3>${name}</h3>
-                    <p>${position} | ${rank}</p>
-                    ${details ? `<p>${details}</p>` : ''}
-                </div>
-                <div class="status ${statusClass}">${statusText}</div>
-            `;
-            
-            // Добавляем кнопку удаления
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = '❌';
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.style.padding = '5px 10px';
-            deleteBtn.style.fontSize = '0.8rem';
-            deleteBtn.style.marginLeft = '10px';
-            deleteBtn.onclick = function() {
-                if (confirm(`Удалить ${name} из состава?`)) {
-                    personCard.remove();
-                    updateStats();
-                }
-            };
-            personCard.querySelector('.person-info').appendChild(deleteBtn);
-            
-            document.getElementById(unitContainers[unit]).appendChild(personCard);
-            
-            // Очищаем форму
-            document.getElementById('personName').value = '';
-            document.getElementById('personPosition').value = '';
-            document.getElementById('personRank').value = '';
-            document.getElementById('personDetails').value = '';
-            
-            updateStats();
-            alert(`Боец ${name} добавлен в ${unitTitles[unit]}`);
+            if (data && data[0]) {
+                addFighterToDOM(data[0]);
+                updateStats();
+                
+                document.getElementById('personName').value = '';
+                document.getElementById('personPosition').value = '';
+                document.getElementById('personRank').value = '';
+                document.getElementById('personDetails').value = '';
+                
+                alert(`Боец ${name} добавлен в базу данных!`);
+            }
         }
         
         function updateStats() {
@@ -463,7 +463,7 @@
             
             cards.forEach(card => {
                 const status = card.querySelector('.status').textContent;
-                if (status.includes('✅ Боевая готовность') || status.includes('🎯 На задании')) {
+                if (status.includes('✅ Боевая готовность')) {
                     active++;
                 } else {
                     reserve++;
@@ -475,10 +475,19 @@
             document.getElementById('reserveCount').textContent = reserve;
         }
         
-        function clearAll() {
+        async function clearAll() {
             if (!confirm('ВНИМАНИЕ! Удалить ВСЕХ бойцов (кроме командования)?')) return;
             
-            // Удаляем все карточки, кроме командования (data-id="1")
+            const { error } = await supabase
+                .from('fighters')
+                .delete()
+                .neq('unit', 'command');
+            
+            if (error) {
+                alert('Ошибка очистки: ' + error.message);
+                return;
+            }
+            
             document.querySelectorAll('.person-card').forEach(card => {
                 if (card.dataset.id !== '1') {
                     card.remove();
@@ -486,15 +495,11 @@
             });
             
             updateStats();
-            alert('Все бойцы (кроме командования) удалены из состава.');
+            alert('Все бойцы (кроме командования) удалены из базы.');
         }
-        
-                // Инициализация
-        document.addEventListener('DOMContentLoaded', updateStats);
         
         function checkPassword() {
             const password = document.getElementById('adminPassword').value;
-            // Общий пароль для всех админов
             if (password === '27SAD2016') {
                 document.getElementById('adminContent').style.display = 'block';
                 document.getElementById('adminPassword').style.display = 'none';
@@ -504,6 +509,10 @@
                 alert('Неверный пароль!');
             }
         }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFighters();
+        });
     </script>
 </body>
 </html>
