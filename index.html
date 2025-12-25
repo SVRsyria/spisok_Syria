@@ -387,11 +387,11 @@
         <div class="admin-panel" id="adminPanel">
             <div style="text-align: center; margin-bottom: 20px;">
                 <input type="password" id="adminPassword" placeholder="Введите пароль администратора" style="padding: 10px; width: 300px;">
-                <button onclick="checkPassword()">Войти в админку</button>
+                <button onclick="checkPassword()">Войти в режим Администратора</button>
             </div>
             
             <div id="adminContent" style="display: none;">
-                <h3>🔐 ПАНЕЛЬ УПРАВЛЕНИЯ КОМАНДОВАНИЯ</h3>
+                <h3>🔐 ПАНЕЛЬ УПРАВЛЕНИЯ ОШС</h3>
                 
                 <div class="form-row">
                     <div class="form-group">
@@ -439,7 +439,7 @@
                 <div class="controls">
                     <button onclick="addPerson()">➕ ДОБАВИТЬ БОЙЦА</button>
                     <button onclick="updateStats()">📊 ОБНОВИТЬ СТАТИСТИКУ</button>
-                    <button onclick="clearAll()" class="delete-btn">🗑️ ОЧИСТИТЬ ВСЕХ (кроме командования)</button>
+                    <button onclick="clearAll()" class="delete-btn">🗑️ ОЧИСТИТЬ ВСЕХ</button>
                 </div>
                 
                 <div style="text-align: center; margin-top: 20px; color: #b08d57; font-size: 0.9rem;">
@@ -523,7 +523,7 @@
                 document.getElementById('adminContent').style.display = 'block';
                 document.getElementById('adminPassword').style.display = 'none';
                 document.querySelector('button[onclick="checkPassword()"]').style.display = 'none';
-                alert('Доступ к админке разрешен!');
+                alert('Доступ к администрированию разрешён!');
                 loadFighters();
             } else {
                 alert('Неверный пароль!');
@@ -685,4 +685,5 @@
     }
     </script>
 </body>
+
 </html>
