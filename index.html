@@ -7,27 +7,13 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #2c1810;
-    min-height: 100vh;
-    padding: 20px;
-    position: relative;
-    overflow-x: hidden;
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('https://imgfy.ru/nxIz6r7MCBvXzXh');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1;
-}
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d4a762 0%, #b08d57 25%, #8a6d46 50%, #6b5234 100%);
+            color: #2c1810;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.1"><path d="M0,50 Q25,25 50,50 T100,50" stroke="%236b5234" fill="none"/></svg>');
+        }
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -36,8 +22,6 @@ body::before {
             box-shadow: 0 10px 30px rgba(107, 82, 52, 0.4);
             border: 3px solid #8a6d46;
             overflow: hidden;
-            position: relative;
-            backdrop-filter: blur(2px);
         }
         header {
             background: linear-gradient(to right, #6b5234, #8a6d46, #b08d57);
@@ -266,7 +250,6 @@ body::before {
         .column-section::-webkit-scrollbar-thumb:hover {
             background: #8a6d46;
         }
-
         .column-title {
             color: #6b5234;
             font-size: 1.4rem;
