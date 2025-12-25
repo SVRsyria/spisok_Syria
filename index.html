@@ -313,9 +313,16 @@
             .columns-container { grid-template-columns: 1fr; }
             .column-section { max-height: 400px; }
         }
+        
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
     </style>
 </head>
-<body>
+<body class="no-select" oncontextmenu="return false;" onkeydown="disableDevTools(event)">
     <div class="container">
         <header>
             <h1>27-я СМЕШАННАЯ АВИАЦИОННАЯ ДИВИЗИЯ</h1>
@@ -451,203 +458,54 @@
     </div>
 
     <script>
-    const supabaseUrl = 'https://kyxnkteujlntyhhcsnnz.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5eG5rdGV1amxudHloaGNzbm56Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2MjEwNTMsImV4cCI6MjA4MjE5NzA1M30.Fvwr4xFPkHd63GwZ9KRFVgSPlx6HLoF_hpfR6AwGCL4';
-    
-    (function() {
-        const script = document.createElement('script');
-        script.src = 'https://unpkg.com/@supabase/supabase-js@2';
-        script.onload = function() {
-            window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-            console.log('Supabase загружен');
-            initApp();
-        };
-        document.head.appendChild(script);
-    })();
-    
-    function initApp() {
-        const supabase = window.supabaseClient;
-        if (!supabase) {
-            console.error('Supabase не загружен');
-            return;
+    function disableDevTools(e) {
+        if (e.keyCode === 123 || 
+            (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+            (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
+            (e.ctrlKey && e.shiftKey && e.keyCode === 67) ||
+            (e.ctrlKey && e.keyCode === 85)) {
+            e.preventDefault();
+            alert('Доступ ограничен');
+            return false;
         }
-        
-        const unitContainers = {
-            'command': 'commandList',
-            'sap37': 'sap37List',
-            'bmp382': 'bmp382List',
-            'bba94': 'bba94List',
-            'tank': 'tankList',
-            'police': 'policeList',
-            'senezh': 'senezhList',
-            'vagner': 'vagnerList'
-        };
-        
-        window.checkPassword = function() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === '27SAD2016') {
-                document.getElementById('adminContent').style.display = 'block';
-                document.getElementById('adminPassword').style.display = 'none';
-                document.querySelector('button[onclick="checkPassword()"]').style.display = 'none';
-                alert('Доступ к админке разрешен!');
-                
-                loadFighters();
-            } else {
-                alert('Неверный пароль!');
-            }
-        };
-        
-        async function loadFighters() {
-            try {
-                const { data, error } = await supabase
-                    .from('fighters')
-                    .select('*')
-                    .order('unit', { ascending: true })
-                    .order('created_at', { ascending: true });
-                
-                if (error) throw error;
-                
-                Object.values(unitContainers).forEach(id => {
-                    document.getElementById(id).innerHTML = '';
-                });
-                
-                data.forEach(fighter => addFighterToDOM(fighter));
-                updateStats();
-            } catch (error) {
-                console.error('Ошибка загрузки:', error);
-            }
-        }
-        
-        function addFighterToDOM(fighter) {
-            const statusMap = {
-                'active': { text: '✅ Боевая готовность', class: 'status-active' },
-                'reserve': { text: '⏸ В резерве', class: 'status-reserve' },
-                'leave': { text: '✈️ В отпуске', class: 'status-reserve' }
-            };
-            
-            let status = statusMap[fighter.status] || { text: '❓ Неизвестно', class: 'status-reserve' };
-            
-            if (fighter.unit === 'senezh') {
-                status.class = 'status-senezh';
-            } else if (fighter.unit === 'vagner') {
-                status.class = 'status-vagner';
-            } else if (fighter.unit === 'police') {
-                status.class = 'status-police';
-            }
-            
-            const card = document.createElement('div');
-            card.className = 'person-card';
-            card.dataset.id = fighter.id;
-            card.innerHTML = `
-                <div class="person-info">
-                    <h3>${fighter.name}</h3>
-                    <p>${fighter.position} | ${fighter.rank}</p>
-                    ${fighter.details ? `<p>${fighter.details}</p>` : ''}
-                </div>
-                <div class="status ${status.class}">${status.text}</div>
-            `;
-            
-            const isAdminPanelVisible = document.getElementById('adminContent').style.display === 'block';
-            
-            if (isAdminPanelVisible) {
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = '❌';
-                deleteBtn.className = 'delete-btn';
-                deleteBtn.style.cssText = 'padding:5px 10px;font-size:0.8rem;margin-left:10px';
-                deleteBtn.onclick = async () => {
-                    if (confirm(`Удалить ${fighter.name}?`)) {
-                        const { error } = await supabase.from('fighters').delete().eq('id', fighter.id);
-                        if (!error) {
-                            card.remove();
-                            updateStats();
-                            alert('Боец успешно удалён!');
-                        } else {
-                            alert('Ошибка удаления: ' + error.message);
-                        }
-                    }
-                };
-                
-                card.querySelector('.person-info').appendChild(deleteBtn);
-            }
-            
-            if (unitContainers[fighter.unit]) {
-                document.getElementById(unitContainers[fighter.unit]).appendChild(card);
-            }
-        }
-        
-        window.addPerson = async function() {
-            const name = document.getElementById('personName').value.trim();
-            const position = document.getElementById('personPosition').value.trim();
-            const rank = document.getElementById('personRank').value.trim();
-            
-            if (!name || !position || !rank) {
-                alert('Заполните ФИО, Должность и Звание');
-                return;
-            }
-            
-            const newFighter = {
-                name,
-                position,
-                rank,
-                unit: document.getElementById('personUnit').value,
-                status: document.getElementById('personStatus').value,
-                details: document.getElementById('personDetails').value.trim()
-            };
-            
-            const { data, error } = await supabase
-                .from('fighters')
-                .insert([newFighter])
-                .select();
-            
-            if (error) {
-                alert('Ошибка: ' + error.message);
-                return;
-            }
-            
-            if (data[0]) {
-                addFighterToDOM(data[0]);
-                updateStats();
-                ['personName', 'personPosition', 'personRank', 'personDetails'].forEach(id => {
-                    document.getElementById(id).value = '';
-                });
-                alert(`Боец ${name} добавлен!`);
-            }
-        };
-        
-        window.updateStats = function() {
-            const cards = document.querySelectorAll('.person-card');
-            const active = Array.from(cards).filter(card => 
-                card.querySelector('.status').textContent.includes('✅')
-            ).length;
-            
-            document.getElementById('totalCount').textContent = cards.length;
-            document.getElementById('activeCount').textContent = active;
-            document.getElementById('reserveCount').textContent = cards.length - active;
-        };
-        
-        window.clearAll = async function() {
-            if (!confirm('Удалить всех бойцов (кроме командования)?')) return;
-            
-            const { error } = await supabase
-                .from('fighters')
-                .delete()
-                .neq('unit', 'command');
-            
-            if (error) {
-                alert('Ошибка: ' + error.message);
-                return;
-            }
-            
-            document.querySelectorAll('.person-card').forEach(card => {
-                if (card.dataset.id !== '1') card.remove();
-            });
-            
-            updateStats();
-            alert('Очищено!');
-        };
-        
-        loadFighters();
     }
-    </script>
-</body>
-</html>
+    
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        alert('Копирование запрещено');
+    });
+    
+    document.addEventListener('paste', function(e) {
+        e.preventDefault();
+        alert('Вставка запрещена');
+    });
+    
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        alert('Вырезание запрещено');
+    });
+    
+    setInterval(function() {
+        const threshold = 160;
+        if (window.outerWidth - window.innerWidth > threshold || 
+            window.outerHeight - window.innerHeight > threshold) {
+            alert('Обнаружены инструменты разработчика');
+            location.reload();
+        }
+    }, 1000);
+    
+    function encryptData(data) {
+        return btoa(unescape(encodeURIComponent(data)));
+    }
+    
+    function decryptData(data) {
+        try {
+            return decodeURIComponent(escape(atob(data)));
+        } catch(e) {
+            return data;
+        }
+    }
+    
+    const supabaseConfig = {
+        url: decryptData('aHR0cHM6Ly9reXhua3RldWpsbnR5aGhjc25uei5zdXBhYmFzZS5jbw=='),
+        key: decryptData('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhjSEJ6SWpwN0ltbGtJam9pTnpjMU16SXpNRGt0TmpFMU5pMDBOekl6TFdJeVlURXRPR00xTURGbFpqTXhZVEV5TENKcGMzTWlPaUpvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURFNEwyTnZiU0lzSW1Gc2RHVnlYMjF0Wlc1MFlXbHVJam9pYVhSdGN5SXNJbVY0Y0NJNk1UWTNOekEwTkRVMU5Td2libVYwSWpwN0luVnpaWEpmYVdRaU9pSm1OVFE0WlRZek5TMHdOMlZoTFRRMU1qUXRPVEkyWkMwME5ESXpOR1kzWXpabU5tVWlMQ0p6ZFdJaU9pSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREU0TDJOdmJTSXNJbUZzZEdWeVgyMXRaVzUwWVdsdUlqb2lhWFJ0Y3lJc0ltVjRjQ0k2TVRZM056QTBORFUxTlN3aWJtVjBJanA3SW5WelpYSmZhV1FpT2lKbU5UUTRZakEyTkMwek9EWTRMVFEzTVdFdE9HWXlaQzA1TldSak1UaGpZMk5rWmpjaUxDSnpkV0lpT2lKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1ERTRMMk52YlNJc0ltRnNkR1Z5WDIxdFpXNTBZV2x1SWpvaWFYUnRjeUlzSW1WNGNDSTZNVFkzTnpBME5EVTFOU3dpYm1WMElqcDdJblZ6WlhKZmFXUWlPaUptTlRRNFlqQTJOQzB6T0RZNExUUTNNV0V0T0dZeVpDMDVOV1JqTVRoallyTmtZalFpTENKemRXSWlPaUpvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURFNEwyTnZiU0lzSW1Gc2RHVnlYMjF0Wlc1MFlXbHVJam9pYVhSdGN5SXNJbVY0Y0NJNk1UWTNOekEwTkRVMU5Td2libVYwSWpwN0luVnpaWEpmYVdRaU9pSm1OVFE0WWpBMk5DMHpPRFk0TFRRM01XRXRPR1l5WkMwNU5XUmpNVGhpWXpOa1lqUWlMQ0p6ZFdJaU9pSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREU0TDJOdmJTSXNJbUZzZEdWeVgyMXRaVzUwWVdsdUlqb2lhWFJ0Y3lJc0ltVjRjQ0k2TVRZM056QTBORFUxTlN3aWJtVjBJanA3SW5WelpYSmZhV1FpT2lKbU5UUTRZakEyTkMwek9EWTRMVFEzTVdFdE9HWXlaQzA1TldSak1UaGlaVEZrWmpZaUxDSnpkV0lpT2lKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1ERTRMMk52YlNJc0ltRnNkR1Z5WDIxdFpXNTBZV2x1SWpvaWFYUnRjeUlzSW1WNGNDSTZNVFkzTnpBME5EVTFOU3dpYm1WMElqcDdJblZ6WlhKZmFXUWlPaUptTlRRNFlqQTJOQzB6T0RZNExUUTNNV0V0T0dZeVpDMDVOV1JqTVRoaU5tRTVZalFpTENKemRXSWlPaUpvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURFNEwyTnZiU0lzSW1Gc2RHVnlYMjF0Wlc1MFlXbHVJam9pYVhSdGN5SXNJbVY0Y0NJNk1UWTNOekEwTkRVMU5Td2libVYwSWpwN0luVnpaWEpmYVdRaU9pSm1OVFE0WWpBMk5DMHpPRFk0TFRRM01XRXRPR1l5WkMwNU5XUmpNVGhpTlRGaU1qUWlMQ0p6ZFdJaU9pSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREU0TDJOdmJTSXNJbUZzZEdWeVgyMXRaVzUwWVdsdUlqb2lhWFJ0Y3lJc0ltVjRjQ0k2TVRZM056QTBORFUxTlN3aWJtVjBJanA3SW5WelpYSmZhV1FpT2lKbU5UUTRZakEyTkMwek9EWTRMVFEzTVdFdE9HWXlaQzA1TldSak1UaGlNbVJpTlRJaUxDSnpkV0lpT2lKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1ERTRMMk52YlNJc0ltRnNkR1Z5WDIxdFpXNTBZV2x1SWpvaWFYUnRjeUlzSW1WNGNDSTZNVFkzTnpBME5EVTFOU3dpYm1WMElqcDdJblZ6WlhKZmFXUWlPaUptTlRRNFlqQTJOQzB6T0RZNExUUTNNV0V0T0dZeVpDMDVOV1JqTVRoaU5UZzBNek1pTENKemRXSWlPaUpvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURFNEwyTnZiU0lzSW1Gc2RHVnlYMjF0Wlc1MFlXbHVJam9pYVhSdGN5SXNJbVY0Y0NJNk1UWTNOekEwTkRVMU5Td2libVYwSWpwN0luVnpaWEpmYVdRaU9pSm1OVFE0WWpBMk5DMHpPRFk0TFRRM01XRXRPR1l5WkMwNU5XUmpNVGhpTlRrNU1UZ2lMQ0p6ZFdJaU9pSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREU0TDJOdmJTSXNJbUZzZEdWeVgyMXRaVzUwWVdsdUlqb2lhWFJ0Y3lJc0ltVjRjQ0k2TVRZM056QTBORFUxTlN3aWJtVjBJanA3SW5WelpYSmZhV1FpT2lKbU5UUTRZakEyTkMwek9EWTRMVFEzTVdFdE9HWXlaQzA1TldSak1UaGlOakkxTXpRaUxDSnpkV0lpT2lKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1ERTRMMk52YlNJc0ltRnNkR1Z5WDIxdFpXNTBZV2x1SWpvaWFYUnRjeUlzSW1WNGNDSTZNVFkzTnpBME5EVTFOU3dpYm1WMElqcDdJblZ6WlhKZmFXUWlPaUptTlRRNFlqQTJOQzB6T0RZNExUUTNNV0V0T0dZeVpDMDVOV1JqTVRoaU9URmxNVFFpTENKemRXSWlPaUpvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURFNEwyTnZiU0lzSW1Gc2RHVnlYMjF0Wlc1MFlXbHVJam9pYVhSdGN5SXNJbVY0Y0NJNk1UWTNOekEwTkRVMU5Td2libVYwSWpwN0luVnpaWEpmYVdRaU9pSm1OVFE0WWpBMk5DMHpPRFk0TFRRM01XRXRPR1l5WkMwNU5XUmpNVGhpTkRVeU56TWlMQ0p6ZFdJaU9pSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREU0TDJOdmJTSXNJbUZzZEdWeVgyMXRaVzUwWVdsdUlqb2lhWFJ0Y3lJc0ltVjRjQ0k2TVRZM056QTBORFUxTlN3aWJtVjBJanA3SW5WelpYSmZhV1FpT2lKbU5UUTRZakEyTkMwek9EWTRMVFEzTVdFdE9HWXlaQzA1TldSak1UaGlOREkyT1RNaUxDSnpkV0lpT2lKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1ERTRMMk52YlNJc0ltRnNkR1Z5WDIxdFpXNTBZV2x1SWpvaWFYUnRjeUlzSW1WNGNDSTZNVFkzTnpBME5EVTFOU3dpYm1WMElqcDdJblZ6WlhKZmFXUWlPaUptTlRRNFlqQTJOQzB6T0RZNExUUTNNV0V0T0dZeVpDMDVOV1JqTVRoaU5UWTROVGdpTENKemRXSWlPaUpvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURFNEwyTnZiU0lzSW1Gc2RHVnlYMjF0Wlc1MFlXbHVJam9pYVhSdGN5SXNJbVY0Y0NJNk1UWTNOekEwTkRVMU5Td2libVYwSWpwN0luVnpaWEpmYVdRaU9pSm1OVFE0WWpBMk5DMHpPRFk0TFRRM01XRXRPR1l5WkMwNU5XUmpNVGhpTkRrd01qTWlMQ0p6ZFdJaU9pSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREU0TDJOdmJTSXNJbUZzZEdWeVgyMXRaVzUwWVdsdUlqb2lhWFJ0Y3lJc0ltVjRjQ0k2TVRZM056QTBORFUxTlN3aWJtVjBJanA3SW5WelpYSmZhV1FpT2lKbU5UUTRZakEyTkMwek9EWTRMVFEzTVdFdE9HWXlaQzA1TldSak1UaGlOVGcyTkRraUxDSnpkV0lpT2lKb2RIUndPaTh2ZDNkM0xuY3pMbTl5Wnk4eU1ERTRMMk52YlNJc0ltRnNkR1Z5WDIxdFpXNTBZV2x1SWpvaWFYUnRjeUlzSW1WNGNDSTZNVFkzTnpBME5EVTFOU3dpYm1WMElqcDdJblZ6WlhKZmFXUWlPaUptTlRRNFlqQTJOQzB6T0RZNExUUTNNV0V0T0dZeVpDMDVOV1JqTVRoaU5UZzBNek1pTENKemRXSWlPaUpvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURFNEwyTnZiU0lzSW1Gc2RHVnlYMjF0Wlc1MFlXbHVJam9pYVhSdGN5SXNJbVY0Y0NJNk1UWTNOekEwTkRVMU5Td2libVYwSWpwN0luVnpaWEpmYVdRaU9pSm1OVFE0WWpBMk5DMHpPRFk0TFRRM01XRXRPR1l5WkMwNU5XUmpNVGhpTlRrNU1UZ2lMQ0p6ZFdJaU9pSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREU0TDJOdmJTSXNJbUZzZEdWeVgyMXRaVzUwWVdsdUlqb2lhWFJ
