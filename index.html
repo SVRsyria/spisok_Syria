@@ -7,7 +7,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Фоновое изображение с размытием - исправленный URL */
+        /* Ваше изображение как размытый фон */
         body::before {
             content: '';
             position: fixed;
@@ -16,23 +16,29 @@
             width: 100%;
             height: 100%;
             background-image: linear-gradient(rgba(107, 82, 52, 0.7), rgba(44, 24, 16, 0.8)), 
-                            url('https://images.unsplash.com/photo-1546188994-07c34f6e5e1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+                            url('https://imgfy.ru/ib/gZXDo0AEHolO3hs_1766686495.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            filter: blur(10px) brightness(0.7);
+            background-attachment: fixed;
+            filter: blur(12px) brightness(0.8);
             z-index: -2;
         }
         
-        /* Основной фон как запасной вариант */
+        /* Затемнение для улучшения читаемости */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, 
-                rgba(212, 167, 98, 0.95) 0%, 
-                rgba(176, 141, 87, 0.95) 25%, 
-                rgba(138, 109, 70, 0.95) 50%, 
-                rgba(107, 82, 52, 0.95) 100%),
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.1"><path d="M0,50 Q25,25 50,50 T100,50" stroke="%236b5234" fill="none"/></svg>');
             color: #2c1810;
             min-height: 100vh;
             padding: 20px;
@@ -78,7 +84,7 @@
         .stats-bar {
             display: flex;
             justify-content: space-around;
-            background-color: rgba(44, 24, 16, 0.9);
+            background-color: rgba(44, 24, 16, 0.95);
             color: #d4a762;
             padding: 12px;
             font-size: 0.9rem;
@@ -164,7 +170,7 @@
             border: 2px solid #283593;
         }
         .admin-panel {
-            background-color: rgba(44, 24, 16, 0.9);
+            background-color: rgba(44, 24, 16, 0.95);
             color: #fff8eb;
             padding: 25px;
             margin-top: 30px;
@@ -257,7 +263,7 @@
             margin-top: 20px;
         }
         .column-section {
-            background: rgba(255, 248, 235, 0.8);
+            background: rgba(255, 248, 235, 0.85);
             border-radius: 10px;
             padding: 20px;
             border: 2px solid #d4a762;
@@ -315,6 +321,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Весь HTML код сайта остается без изменений -->
         <header>
             <h1>27-я СМЕШАННАЯ АВИАЦИОННАЯ ДИВИЗИЯ</h1>
             <h2>Сирийский Контингент | Зона ответственности: Аллепо</h2>
@@ -452,6 +459,7 @@
         </footer>
     </div>
 
+    <!-- Весь JavaScript код остается без изменений -->
     <script>
     const supabaseUrl = 'https://kyxnkteujlntyhhcsnnz.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5eG5rdGV1amxudHloaGNzbm56Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2MjEwNTMsImV4cCI6MjA4MjE5NzA1M30.Fvwr4xFPkHd63GwZ9KRFVgSPlx6HLoF_hpfR6AwGCL4';
