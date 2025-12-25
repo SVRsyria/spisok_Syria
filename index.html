@@ -7,7 +7,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Ваше изображение как размытый фон */
+        /* Ваше изображение как размытый фон - убрал градиент, уменьшил размытие */
         body::before {
             content: '';
             position: fixed;
@@ -15,17 +15,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: linear-gradient(rgba(107, 82, 52, 0.7), rgba(44, 24, 16, 0.8)), 
-                            url('https://imgfy.ru/ib/gZXDo0AEHolO3hs_1766686495.png');
+            background-image: url('https://imgfy.ru/ib/gZXDo0AEHolO3hs_1766686495.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            filter: blur(12px) brightness(0.8);
+            filter: blur(6px) brightness(0.8);
             z-index: -2;
         }
         
-        /* Затемнение для улучшения читаемости */
+        /* Убавил затемнение для лучшей видимости картинки */
         body::after {
             content: '';
             position: fixed;
@@ -33,7 +32,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.3);
             z-index: -1;
         }
         
