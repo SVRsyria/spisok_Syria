@@ -172,7 +172,6 @@
                 <div class="controls">
                     <button onclick="addFighter()">➕ ДОБАВИТЬ БОЙЦА</button>
                     <button onclick="updateStats()">📊 ОБНОВИТЬ СТАТИСТИКУ</button>
-                    <button onclick="clearAll()" class="delete-btn">🗑️ ОЧИСТИТЬ ВСЕХ</button>
                 </div>
                 
                 <div style="text-align: center; margin-top: 20px; color: #b08d57; font-size: 0.9rem;">
@@ -385,23 +384,6 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
             document.getElementById('totalCount').textContent = cards.length;
             document.getElementById('activeCount').textContent = activeCards.length;
             document.getElementById('reserveCount').textContent = cards.length - activeCards.length;
-        }
-        
-        async function clearAll() {
-            if (!supabaseClient || !confirm('Удалить всех бойцов кроме командования?')) return;
-            
-            const { error } = await supabaseClient
-                .from('fighters')
-                .delete()
-                .neq('unit', 'command');
-            
-            if (error) {
-                alert('Ошибка: ' + error.message);
-                return;
-            }
-            
-            await loadFighters();
-            alert('Система очищена');
         }
         
         document.addEventListener('DOMContentLoaded', () => {
