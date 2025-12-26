@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>27-я САД - Сирийский контингент</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:url('https://imgfy.ru/ib/gZXDo0AEHolO3hs_1766686495.png') center/cover no-repeat fixed;filter:blur(6px) brightness(0.8);z-index:-2}
@@ -54,7 +55,7 @@
         .no-select{user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}
     </style>
 </head>
-<body class="no-select" oncontextmenu="return false;" onkeydown="return (function(e){if(e.keyCode===123||(e.ctrlKey&&e.shiftKey&&e.keyCode===73)||(e.ctrlKey&&e.shiftKey&&e.keyCode===74)||(e.ctrlKey&&e.shiftKey&&e.keyCode===67)||(e.ctrlKey&&e.keyCode===85)){e.preventDefault();alert('Доступ ограничен');return false}})(event)">
+<body class="no-select">
     <div class="container">
         <header>
             <h1>27-я СМЕШАННАЯ АВИАЦИОННАЯ ДИВИЗИЯ</h1>
@@ -119,7 +120,7 @@
         <div class="admin-panel" id="adminPanel">
             <div style="text-align: center; margin-bottom: 20px;">
                 <input type="password" id="adminPassword" placeholder="Введите пароль администратора" style="padding: 10px; width: 300px;">
-                <button onclick="window.cP()">Войти в режим Администратора</button>
+                <button onclick="checkAdminPassword()">Войти в режим Администратора</button>
             </div>
             
             <div id="adminContent" style="display: none;">
@@ -169,9 +170,9 @@
                 </div>
                 
                 <div class="controls">
-                    <button onclick="window.aP()">➕ ДОБАВИТЬ БОЙЦА</button>
-                    <button onclick="window.uS()">📊 ОБНОВИТЬ СТАТИСТИКУ</button>
-                    <button onclick="window.cA()" class="delete-btn">🗑️ ОЧИСТИТЬ ВСЕХ</button>
+                    <button onclick="addFighter()">➕ ДОБАВИТЬ БОЙЦА</button>
+                    <button onclick="updateStats()">📊 ОБНОВИТЬ СТАТИСТИКУ</button>
+                    <button onclick="clearAll()" class="delete-btn">🗑️ ОЧИСТИТЬ ВСЕХ</button>
                 </div>
                 
                 <div style="text-align: center; margin-top: 20px; color: #b08d57; font-size: 0.9rem;">
@@ -183,235 +184,244 @@
         <footer>
             <p>27-я Смешанная Авиационная Дивизия | Сирия, Аллепо | 2016</p>
             <p>Для добавления в состав: заполните форму выше и нажмите "Добавить бойца"</p>
-            <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">
-                Привет)
-            </p>
         </footer>
     </div>
 
-        <script>
-    (function(){
-        'use strict';
+    <script>
+        let supabaseClient = null;
+        const SUPABASE_URL = 'https://kyxnkteujlntyhhcsnnz.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5eG5rdGV1amxudHloaGNzbm56Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY1MTA0NjYsImV4cCI6MjA0MjA4NjQ2Nn0.Lyj_IUps_84FIDz3IRvU60tM6e3Q_Q2Q5mKQpVz4-mg';
         
-        const _0x5b98a1=['\x68\x74\x74\x70\x73\x3a\x2f\x2f\x6b\x79\x78\x6e\x6b\x74\x65\x75\x6a\x6c\x6e\x74\x79\x68\x68\x63\x73\x6e\x6e\x7a\x2e\x73\x75\x70\x61\x62\x61\x73\x65\x2e\x63\x6f','\x65\x79\x4a\x68\x62\x47\x63\x69\x4f\x69\x4a\x56\x4f\x69\x49\x31\x4e\x53\x42\x33\x59\x58\x4a\x7a\x49\x44\x6f\x67\x65\x79\x4a\x68\x62\x47\x63\x69\x4f\x69\x4a\x6a\x61\x47\x46\x6a\x61\x32\x56\x6b\x49\x44\x6f\x67\x65\x79\x4a\x68\x62\x47\x63\x69\x4f\x69\x4a\x6d\x62\x33\x4a\x74\x62\x47\x6c\x69\x62\x57\x52\x66\x62\x32\x35\x73\x5a\x53\x42\x33\x59\x58\x4a\x7a\x49\x44\x6f\x67\x65\x79\x4a\x68\x62\x47\x63\x69\x4f\x69\x4a\x7a\x5a\x57\x78\x6c\x64\x47\x56\x6b\x49\x44\x6f\x67\x4d\x6a\x41\x75\x4d\x43\x34\x78\x4e\x69\x30\x3d'];
-        
-        const _0x4a8f2d=function(_0x3d9c1e,_0x2b7a4f){
-            _0x3d9c1e=_0x3d9c1e-0x0;
-            let _0x5b98a1=_0x5b98a1[_0x3d9c1e];
-            if(_0x4a8f2d['\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64']===undefined){
-                (function(){
-                    const _0x1c8e9a=function(){
-                        let _0x3f5d2c;
-                        try{
-                            _0x3f5d2c=Function('\x72\x65\x74\x75\x72\x6e\x20\x28\x66\x75\x6e\x63\x74\x69\x6f\x6e\x28\x29\x20'+
-                                '\x7b\x7d\x2e\x63\x6f\x6e\x73\x74\x72\x75\x63\x74\x6f\x72\x28\x22\x72\x65\x74\x75\x72\x6e\x20\x74\x68\x69\x73\x22\x29\x28\x29\x29;')();
-                        }catch(_0x4e7a8b){
-                            _0x3f5d2c=window;
-                        }
-                        return _0x3f5d2c;
-                    };
-                    const _0x2c8a1f=_0x1c8e9a();
-                    const _0x3a9d4e='\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4a\x4b\x4c\x4d\x4e\x4f\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5a\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x2b\x2f\x3d';
-                    _0x2c8a1f['\x61\x74\x6f\x62']||(_0x2c8a1f['\x61\x74\x6f\x62']=function(_0x5a3b7c){
-                        const _0x2e6d8a=String(_0x5a3b7c)['\x72\x65\x70\x6c\x61\x63\x65'](/=+$/,'');
-                        let _0x4b2f9e='';
-                        for(let _0x3d9c1e=0x0,_0x2c8a1f,_0x3a9d4e,_0x3f5d2c=0x0;_0x3a9d4e=_0x2e6d8a['\x63\x68\x61\x72\x41\x74'](_0x3f5d2c++);~_0x3a9d4e&&(_0x2c8a1f=_0x3d9c1e%0x4?_0x2c8a1f*0x40+_0x3a9d4e:_0x3a9d4e,_0x3d9c1e++%0x4)?_0x4b2f9e+=String['\x66\x72\x6f\x6d\x43\x68\x61\x72\x43\x6f\x64\x65'](0xff&_0x2c8a1f>>(-0x2*_0x3d9c1e&0x6)):0x0){_0x3a9d4e=_0x3a9d4e['\x69\x6e\x64\x65\x78\x4f\x66'](_0x3a9d4e);}
-                        return _0x4b2f9e;
-                    });
-                }());
-                _0x4a8f2d['\x69\x6e\x69\x74\x69\x61\x6c\x69\x7a\x65\x64']=!![];
-            }
-            const _0x1c8e9a=_0x5b98a1['\x6c\x65\x6e\x67\x74\x68'];
-            let _0x2c8a1f='';
-            for(let _0x3a9d4e=0x0;_0x3a9d4e<_0x1c8e9a;_0x3a9d4e++){
-                _0x2c8a1f+='%'+('00'+_0x5b98a1['\x63\x68\x61\x72\x43\x6f\x64\x65\x41\x74'](_0x3a9d4e)['\x74\x6f\x53\x74\x72\x69\x6e\x67'](0x10))['\x73\x6c\x69\x63\x65'](-0x2);
-            }
-            return decodeURIComponent(_0x2c8a1f);
-        };
-        
-        const _0x3b6a5c=_0x4a8f2d;
-        
-        const sU=_0x3b6a5c(0x0);
-        const sK=function(){
-            const _0x2b7a4f=_0x3b6a5c(0x1);
-            let _0x4e7a8b='';
-            for(let _0x5a3b7c=0x0;_0x5a3b7c<_0x2b7a4f['\x6c\x65\x6e\x67\x74\x68'];_0x5a3b7c+=0x2){
-                _0x4e7a8b+=String['\x66\x72\x6f\x6d\x43\x68\x61\x72\x43\x6f\x64\x65'](parseInt(_0x2b7a4f['\x73\x75\x62\x73\x74\x72'](_0x5a3b7c,0x2),0x10)^0x42);
-            }
-            return _0x4e7a8b;
-        }();
-        
-        const aH=['\x64\x35\x34\x61\x30\x62\x36\x31\x61\x38\x61\x31\x65\x66\x31\x33\x31\x33\x64\x37\x63\x65\x30\x33\x63\x35\x65\x38\x62\x33\x64\x37\x61\x37\x62\x62\x66\x61\x30\x30\x63\x34\x37\x66\x31\x62\x31\x63\x37\x39\x30\x35\x65\x33\x66\x38\x62\x33\x61\x35\x64\x35\x61\x35',
-        '\x38\x64\x39\x36\x39\x65\x65\x66\x36\x65\x63\x61\x64\x33\x63\x32\x39\x61\x33\x61\x36\x32\x39\x32\x38\x30\x65\x36\x38\x36\x63\x66\x30\x63\x33\x66\x35\x64\x35\x61\x38\x36\x61\x66\x66\x33\x63\x61\x31\x32\x30\x32\x30\x63\x39\x32\x33\x61\x64\x63\x36\x63\x39\x32'];
-        
-        async function hP(_0x2e6d8a){
-            const _0x4b2f9e=new TextEncoder()['\x65\x6e\x63\x6f\x64\x65'](_0x2e6d8a);
-            const _0x3f5d2c=await crypto['\x73\x75\x62\x74\x6c\x65']['\x64\x69\x67\x65\x73\x74']('\x53\x48\x41\x2d\x32\x35\x36',_0x4b2f9e);
-            const _0x1c8e9a=Array['\x66\x72\x6f\x6d'](new Uint8Array(_0x3f5d2c));
-            return _0x1c8e9a['\x6d\x61\x70'](_0x2c8a1f=>_0x2c8a1f['\x74\x6f\x53\x74\x72\x69\x6e\x67'](0x10)['\x70\x61\x64\x53\x74\x61\x72\x74'](0x2,'\x30'))['\x6a\x6f\x69\x6e']('');
+        async function initSupabase() {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            await loadFighters();
         }
         
-        document['\x61\x64\x64\x45\x76\x65\x6e\x74\x4c\x69\x73\x74\x65\x6e\x65\x72']('\x63\x6f\x70\x79',function(_0x3a9d4e){
-            _0x3a9d4e['\x70\x72\x65\x76\x65\x6e\x74\x44\x65\x66\x61\x75\x6c\x74']();
-            alert('\x4b\x6f\x70\x69\x72\x6f\x76\x61\x6e\x69\x65\x20\x7a\x61\x70\x72\x65\x74\x73\x68\x65\x6e\x6f');
-        });
+        function generateDynamicPassword() {
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth() + 1;
+            const year = now.getFullYear();
+            const base = "27SAD";
+            const seed = (day * month * year) % 999;
+            const checksum = ((day + month + year) * 27) % 1000;
+            const dateStr = `${day}${month}${year}`;
+            const hash = Array.from(dateStr).reduce((acc, char) => 
+                ((acc << 5) - acc) + char.charCodeAt(0), 0);
+            return `${base}${seed.toString().padStart(3,'0')}${checksum.toString().padStart(3,'0')}${Math.abs(hash).toString(16).substr(0,4).toUpperCase()}`;
+        }
         
-        (function(){
-            const _0x4b2f9e=document['\x63\x72\x65\x61\x74\x65\x45\x6c\x65\x6d\x65\x6e\x74']('\x73\x63\x72\x69\x70\x74');
-            _0x4b2f9e['\x73\x72\x63']='\x68\x74\x74\x70\x73\x3a\x2f\x2f\x75\x6e\x70\x6b\x67\x2e\x63\x6f\x6d\x2f\x40\x73\x75\x70\x61\x62\x61\x73\x65\x2f\x73\x75\x70\x61\x62\x61\x73\x65\x2d\x6a\x73\x40\x32';
-            _0x4b2f9e['\x6f\x6e\x6c\x6f\x61\x64']=function(){
-                window['\x73\x75\x70\x61\x62\x61\x73\x65\x43\x6c\x69\x65\x6e\x74']=window['\x73\x75\x70\x61\x62\x61\x73\x65']['\x63\x72\x65\x61\x74\x65\x43\x6c\x69\x65\x6e\x74'](sU,sK);
-                iA();
-            };
-            document['\x68\x65\x61\x64']['\x61\x70\x70\x65\x6e\x64\x43\x68\x69\x6c\x64'](_0x4b2f9e);
-        })();
+        async function checkAdminPassword() {
+            const input = document.getElementById('adminPassword').value.trim();
+            const correctPassword = generateDynamicPassword();
+            
+            if (input === correctPassword) {
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('adminPassword').style.display = 'none';
+                document.querySelector('button[onclick="checkAdminPassword()"]').style.display = 'none';
+                await loadFighters();
+                alert('Доступ разрешен');
+            } else {
+                alert('Неверный пароль!');
+            }
+        }
         
-        function iA(){
-            const _0x3a9d4e=window['\x73\x75\x70\x61\x62\x61\x73\x65\x43\x6c\x69\x65\x6e\x74'];
-            if(!_0x3a9d4e)return;
+        async function loadFighters() {
+            if (!supabaseClient) return;
             
-            const _0x4b2f9e={
-                '\x63\x6f\x6d\x6d\x61\x6e\x64':'\x63\x6f\x6d\x6d\x61\x6e\x64\x4c\x69\x73\x74',
-                '\x73\x61\x70\x33\x37':'\x73\x61\x70\x33\x37\x4c\x69\x73\x74',
-                '\x62\x6d\x70\x33\x38\x32':'\x62\x6d\x70\x33\x38\x32\x4c\x69\x73\x74',
-                '\x62\x62\x61\x39\x34':'\x62\x62\x61\x39\x34\x4c\x69\x73\x74',
-                '\x74\x61\x6e\x6b':'\x74\x61\x6e\x6b\x4c\x69\x73\x74',
-                '\x70\x6f\x6c\x69\x63\x65':'\x70\x6f\x6c\x69\x63\x65\x4c\x69\x73\x74',
-                '\x73\x65\x6e\x65\x7a\x68':'\x73\x65\x6e\x65\x7a\x68\x4c\x69\x73\x74',
-                '\x76\x61\x67\x6e\x65\x72':'\x76\x61\x67\x6e\x65\x72\x4c\x69\x73\x74'
-            };
+            const { data, error } = await supabaseClient
+                .from('fighters')
+                .select('*')
+                .order('unit', { ascending: true })
+                .order('created_at', { ascending: true });
             
-            window['\x63\x50']=async function(){
-                const _0x3f5d2c=document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x61\x64\x6d\x69\x6e\x50\x61\x73\x73\x77\x6f\x72\x64')['\x76\x61\x6c\x75\x65'];
-                if(!_0x3f5d2c)return alert('\x56\x76\x65\x64\x69\x74\x65\x20\x70\x61\x72\x6f\x6c\x21');
-                const _0x1c8e9a=await hP(_0x3f5d2c);
-                if(aH['\x69\x6e\x63\x6c\x75\x64\x65\x73'](_0x1c8e9a)){
-                    document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x61\x64\x6d\x69\x6e\x43\x6f\x6e\x74\x65\x6e\x74')['\x73\x74\x79\x6c\x65']['\x64\x69\x73\x70\x6c\x61\x79']='\x62\x6c\x6f\x63\x6b';
-                    document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x61\x64\x6d\x69\x6e\x50\x61\x73\x73\x77\x6f\x72\x64')['\x73\x74\x79\x6c\x65']['\x64\x69\x73\x70\x6c\x61\x79']='\x6e\x6f\x6e\x65';
-                    document['\x71\x75\x65\x72\x79\x53\x65\x6c\x65\x63\x74\x6f\x72']('\x62\x75\x74\x74\x6f\x6e\x5b\x6f\x6e\x63\x6c\x69\x63\x6b\x3d\x22\x63\x50\x28\x29\x22\x5d')['\x73\x74\x79\x6c\x65']['\x64\x69\x73\x70\x6c\x61\x79']='\x6e\x6f\x6e\x65';
-                    alert('\x44\x6f\x73\x74\x75\x70\x20\x72\x61\x7a\x72\x65\x73\x68\x65\x6e\x21');
-                    lF();
-                }else{
-                    alert('\x4e\x65\x76\x65\x72\x6e\x79\x69\x20\x70\x61\x72\x6f\x6c\x21');
-                    document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x61\x64\x6d\x69\x6e\x50\x61\x73\x73\x77\x6f\x72\x64')['\x76\x61\x6c\x75\x65']='';
-                }
-            };
-            
-            async function lF(){
-                try{
-                    const {data:_0x3f5d2c,error:_0x1c8e9a}=await _0x3a9d4e['\x66\x72\x6f\x6d']('\x66\x69\x67\x68\x74\x65\x72\x73')['\x73\x65\x6c\x65\x63\x74']('\x2a')['\x6f\x72\x64\x65\x72']('\x75\x6e\x69\x74',{'\x61\x73\x63\x65\x6e\x64\x69\x6e\x67':!![]})['\x6f\x72\x64\x65\x72']('\x63\x72\x65\x61\x74\x65\x64\x5f\x61\x74',{'\x61\x73\x63\x65\x6e\x64\x69\x6e\x67':!![]});
-                    if(_0x1c8e9a)throw _0x1c8e9a;
-                    Object['\x76\x61\x6c\x75\x65\x73'](_0x4b2f9e)['\x66\x6f\x72\x45\x61\x63\x68'](_0x2c8a1f=>document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64'](_0x2c8a1f)['\x69\x6e\x6e\x65\x72\x48\x54\x4d\x4c']='');
-                    if(_0x3f5d2c&&_0x3f5d2c['\x6c\x65\x6e\x67\x74\x68']>0x0){
-                        _0x3f5d2c['\x66\x6f\x72\x45\x61\x63\x68'](_0x2b7a4f=>aFToDOM(_0x2b7a4f));
-                        uS();
-                    }
-                }catch(_0x2c8a1f){
-                    console['\x65\x72\x72\x6f\x72']('\x4f\x73\x68\x69\x62\x6b\x61\x3a',_0x2c8a1f);
-                }
+            if (error) {
+                console.error('Ошибка загрузки:', error);
+                return;
             }
             
-            function aFToDOM(_0x2b7a4f){
-                const _0x2c8a1f={
-                    '\x61\x63\x74\x69\x76\x65':{'\x74\x65\x78\x74':'\u2705\x20\x41\x6f\x65\x76\x61\x79\x61\x20\x67\x6f\x74\x6f\x76\x6e\x6f\x73\x74\x69','\x63\x6c\x61\x73\x73':'\x73\x74\x61\x74\x75\x73\x2d\x61\x63\x74\x69\x76\x65'},
-                    '\x72\x65\x73\x65\x72\x76\x65':{'\x74\x65\x78\x74':'\u23f8\x20\x56\x20\x72\x65\x7a\x65\x72\x76\x65','\x63\x6c\x61\x73\x73':'\x73\x74\x61\x74\x75\x73\x2d\x72\x65\x73\x65\x72\x76\x65'},
-                    '\x6c\x65\x61\x76\x65':{'\x74\x65\x78\x74':'\u2708\xef\xb8\x8f\x20\x56\x20\x6f\x74\x70\x75\x73\x6b\x65','\x63\x6c\x61\x73\x73':'\x73\x74\x61\x74\x75\x73\x2d\x72\x65\x73\x65\x72\x76\x65'}
-                };
-                let _0x3f5d2c=_0x2c8a1f[_0x2b7a4f['\x73\x74\x61\x74\x75\x73']]||{'\x74\x65\x78\x74':'\u2753\x20\x4e\x65\x69\x7a\x76\x65\x73\x74\x6e\x6f','\x63\x6c\x61\x73\x73':'\x73\x74\x61\x74\x75\x73\x2d\x72\x65\x73\x65\x72\x76\x65'};
-                if(_0x2b7a4f['\x75\x6e\x69\x74']==='\x73\x65\x6e\x65\x7a\x68'){
-                    _0x3f5d2c['\x63\x6c\x61\x73\x73']='\x73\x74\x61\x74\x75\x73\x2d\x73\x65\x6e\x65\x7a\x68';
-                }else if(_0x2b7a4f['\x75\x6e\x69\x74']==='\x76\x61\x67\x6e\x65\x72'){
-                    _0x3f5d2c['\x63\x6c\x61\x73\x73']='\x73\x74\x61\x74\x75\x73\x2d\x76\x61\x67\x6e\x65\x72';
-                }else if(_0x2b7a4f['\x75\x6e\x69\x74']==='\x70\x6f\x6c\x69\x63\x65'){
-                    _0x3f5d2c['\x63\x6c\x61\x73\x73']='\x73\x74\x61\x74\x75\x73\x2d\x70\x6f\x6c\x69\x63\x65';
-                }
-                const _0x1c8e9a=document['\x63\x72\x65\x61\x74\x65\x45\x6c\x65\x6d\x65\x6e\x74']('\x64\x69\x76');
-                _0x1c8e9a['\x63\x6c\x61\x73\x73\x4e\x61\x6d\x65']='\x70\x65\x72\x73\x6f\x6e\x2d\x63\x61\x72\x64';
-                _0x1c8e9a['\x64\x61\x74\x61\x73\x65\x74']['\x69\x64']=_0x2b7a4f['\x69\x64'];
-                _0x1c8e9a['\x69\x6e\x6e\x65\x72\x48\x54\x4d\x4c']=`
-                    <div class="person-info">
-                        <h3>${_0x2b7a4f['\x6e\x61\x6d\x65']}</h3>
-                        <p>${_0x2b7a4f['\x70\x6f\x73\x69\x74\x69\x6f\x6e']} | ${_0x2b7a4f['\x72\x61\x6e\x6b']}</p>
-                        ${_0x2b7a4f['\x64\x65\x74\x61\x69\x6c\x73']?`<p>${_0x2b7a4f['\x64\x65\x74\x61\x69\x6c\x73']}</p>`:''}
-                    </div>
-                    <div class="status ${_0x3f5d2c['\x63\x6c\x61\x73\x73']}">${_0x3f5d2c['\x74\x65\x78\x74']}</div>
-                `;
-                const _0x4e7a8b=document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x61\x64\x6d\x69\x6e\x43\x6f\x6e\x74\x65\x6e\x74')['\x73\x74\x79\x6c\x65']['\x64\x69\x73\x70\x6c\x61\x79']==='\x62\x6c\x6f\x63\x6b';
-                if(_0x4e7a8b){
-                    const _0x5a3b7c=document['\x63\x72\x65\x61\x74\x65\x45\x6c\x65\x6d\x65\x6e\x74']('\x62\x75\x74\x74\x6f\x6e');
-                    _0x5a3b7c['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74']='\u274c';
-                    _0x5a3b7c['\x63\x6c\x61\x73\x73\x4e\x61\x6d\x65']='\x64\x65\x6c\x65\x74\x65\x2d\x62\x74\x6e';
-                    _0x5a3b7c['\x73\x74\x79\x6c\x65']['\x63\x73\x73\x54\x65\x78\x74']='\x70\x61\x64\x64\x69\x6e\x67\x3a\x35\x70\x78\x20\x31\x30\x70\x78\x3b\x66\x6f\x6e\x74\x2d\x73\x69\x7a\x65\x3a\x30\x2e\x38\x72\x65\x6d\x3b\x6d\x61\x72\x67\x69\x6e\x2d\x6c\x65\x66\x74\x3a\x31\x30\x70\x78';
-                    _0x5a3b7c['\x6f\x6e\x63\x6c\x69\x63\x6b']=async()=>{
-                        if(confirm(`\x55\x64\x61\x6c\x69\x74\x20${_0x2b7a4f['\x6e\x61\x6d\x65']}?`)){
-                            const {error:_0x4e7a8b}=await _0x3a9d4e['\x66\x72\x6f\x6d']('\x66\x69\x67\x68\x74\x65\x72\x73')['\x64\x65\x6c\x65\x74\x65']()['\x65\x71']('\x69\x64',_0x2b7a4f['\x69\x64']);
-                            if(!_0x4e7a8b){
-                                _0x1c8e9a['\x72\x65\x6d\x6f\x76\x65']();
-                                uS();
-                                alert('\x41\x6f\x65\x74\x73\x20\x75\x64\x61\x6c\x79\x6f\x6e\x21');
-                            }else{
-                                alert('\x4f\x73\x68\x69\x62\x6b\x61\x3a\x20'+_0x4e7a8b['\x6d\x65\x73\x73\x61\x67\x65']);
-                            }
-                        }
-                    };
-                    _0x1c8e9a['\x71\x75\x65\x72\x79\x53\x65\x6c\x65\x63\x74\x6f\x72']('\x2e\x70\x65\x72\x73\x6f\x6e\x2d\x69\x6e\x66\x6f')['\x61\x70\x70\x65\x6e\x64\x43\x68\x69\x6c\x64'](_0x5a3b7c);
-                }
-                if(_0x4b2f9e[_0x2b7a4f['\x75\x6e\x69\x74']]){
-                    document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64'](_0x4b2f9e[_0x2b7a4f['\x75\x6e\x69\x74']])['\x61\x70\x70\x65\x6e\x64\x43\x68\x69\x6c\x64'](_0x1c8e9a);
-                }
-            }
-            
-            window['\x61\x50']=async function(){
-                const _0x2b7a4f=document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x70\x65\x72\x73\x6f\x6e\x4e\x61\x6d\x65')['\x76\x61\x6c\x75\x65']['\x74\x72\x69\x6d']();
-                const _0x3f5d2c=document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x70\x65\x72\x73\x6f\x6e\x50\x6f\x73\x69\x74\x69\x6f\x6e')['\x76\x61\x6c\x75\x65']['\x74\x72\x69\x6d']();
-                const _0x1c8e9a=document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x70\x65\x72\x73\x6f\x6e\x52\x61\x6e\x6b')['\x76\x61\x6c\x75\x65']['\x74\x72\x69\x6d']();
-                if(!_0x2b7a4f||!_0x3f5d2c||!_0x1c8e9a)return alert('\x41\x61\x6f\x6c\x6e\x69\x74\x65\x20\xc6\xc8\xce\x2c\x20\x44\x6f\x6c\x7a\x68\x6e\x6f\x73\x74\x20\x69\x20\x5a\x76\x61\x6e\x69\x65');
-                const _0x2c8a1f={
-                    '\x6e\x61\x6d\x65':_0x2b7a4f,
-                    '\x70\x6f\x73\x69\x74\x69\x6f\x6e':_0x3f5d2c,
-                    '\x72\x61\x6e\x6b':_0x1c8e9a,
-                    '\x75\x6e\x69\x74':document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x70\x65\x72\x73\x6f\x6e\x55\x6e\x69\x74')['\x76\x61\x6c\x75\x65'],
-                    '\x73\x74\x61\x74\x75\x73':document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x70\x65\x72\x73\x6f\x6e\x53\x74\x61\x74\x75\x73')['\x76\x61\x6c\x75\x65'],
-                    '\x64\x65\x74\x61\x69\x6c\x73':document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x70\x65\x72\x73\x6f\x6e\x44\x65\x74\x61\x69\x6c\x73')['\x76\x61\x6c\x75\x65']['\x74\x72\x69\x6d']()
-                };
-                const {data:_0x4e7a8b,error:_0x5a3b7c}=await _0x3a9d4e['\x66\x72\x6f\x6d']('\x66\x69\x67\x68\x74\x65\x72\x73')['\x69\x6e\x73\x65\x72\x74']([_0x2c8a1f])['\x73\x65\x6c\x65\x63\x74']();
-                if(_0x5a3b7c){
-                    alert('\x4f\x73\x68\x69\x62\x6b\x61\x3a\x20'+_0x5a3b7c['\x6d\x65\x73\x73\x61\x67\x65']);
-                    return;
-                }
-                if(_0x4e7a8b[0x0]){
-                    aFToDOM(_0x4e7a8b[0x0]);
-                    uS();
-                    ['\x70\x65\x72\x73\x6f\x6e\x4e\x61\x6d\x65','\x70\x65\x72\x73\x6f\x6e\x50\x6f\x73\x69\x74\x69\x6f\x6e','\x70\x65\x72\x73\x6f\x6e\x52\x61\x6e\x6b','\x70\x65\x72\x73\x6f\x6e\x44\x65\x74\x61\x69\x6c\x73']['\x66\x6f\x72\x45\x61\x63\x68'](_0x3d9c1e=>document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64'](_0x3d9c1e)['\x76\x61\x6c\x75\x65']='');
-                    alert(`\x41\x6f\x65\x74\x73\x20${_0x2b7a4f}\x20\x64\x6f\x62\x61\x76\x6c\x65\x6e\x21`);
-                }
+            const containers = {
+                command: 'commandList',
+                sap37: 'sap37List',
+                bmp382: 'bmp382List',
+                tank: 'tankList',
+                bba94: 'bba94List',
+                police: 'policeList',
+                senezh: 'senezhList',
+                vagner: 'vagnerList'
             };
             
-            window['\x75\x53']=function(){
-                const _0x2b7a4f=document['\x71\x75\x65\x72\x79\x53\x65\x6c\x65\x63\x74\x6f\x72\x41\x6c\x6c']('\x2e\x70\x65\x72\x73\x6f\x6e\x2d\x63\x61\x72\x64');
-                const _0x3f5d2c=Array['\x66\x72\x6f\x6d'](_0x2b7a4f)['\x66\x69\x6c\x74\x65\x72'](_0x1c8e9a=>_0x1c8e9a['\x71\x75\x65\x72\x79\x53\x65\x6c\x65\x63\x74\x6f\x72']('\x2e\x73\x74\x61\x74\x75\x73')['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74']['\x69\x6e\x63\x6c\x75\x64\x65\x73']('\u2705'))['\x6c\x65\x6e\x67\x74\x68'];
-                document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x74\x6f\x74\x61\x6c\x43\x6f\x75\x6e\x74')['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74']=_0x2b7a4f['\x6c\x65\x6e\x67\x74\x68'];
-                document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x61\x63\x74\x69\x76\x65\x43\x6f\x75\x6e\x74')['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74']=_0x3f5d2c;
-                document['\x67\x65\x74\x45\x6c\x65\x6d\x65\x6e\x74\x42\x79\x49\x64']('\x72\x65\x73\x65\x72\x76\x65\x43\x6f\x75\x6e\x74')['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74']=_0x2b7a4f['\x6c\x65\x6e\x67\x74\x68']-_0x3f5d2c;
-            };
+            Object.values(containers).forEach(id => {
+                document.getElementById(id).innerHTML = '';
+            });
             
-            window['\x63\x41']=async function(){
-                if(!confirm('\x55\x64\x61\x6c\x69\x74\x20\x76\x73\x65\x68\x20\x62\x6f\x79\x74\x73\x6f\x76\x3f'))return;
-                const {error:_0x2b7a4f}=await _0x3a9d4e['\x66\x72\x6f\x6d']('\x66\x69\x67\x68\x74\x65\x72\x73')['\x64\x65\x6c\x65\x74\x65']()['\x6e\x65\x71']('\x75\x6e\x69\x74','\x63\x6f\x6d\x6d\x61\x6e\x64');
-                if(_0x2b7a4f){
-                    alert('\x4f\x73\x68\x69\x62\x6b\x61\x3a\x20'+_0x2b7a4f['\x6d\x65\x73\x73\x61\x67\x65']);
-                    return;
-                }
-                document['\x71\x75\x65\x72\x79\x53\x65\x6c\x65\x63\x74\x6f\x72\x41\x6c\x6c']('\x2e\x70\x65\x72\x73\x6f\x6e\x2d\x63\x61\x72\x64')['\x66\x6f\x72\x45\x61\x63\x68'](_0x3f5d2c=>{
-                    if(_0x3f5d2c['\x64\x61\x74\x61\x73\x65\x74']['\x69\x64']!=='1')_0x3f5d2c['\x72\x65\x6d\x6f\x76\x65']();
+            if (data && data.length > 0) {
+                data.forEach(fighter => {
+                    addFighterToDOM(fighter);
                 });
-                uS();
-                alert('\x4f\x63\x68\x69\x73\x68\x63\x68\x65\x6e\x6f\x21');
+                updateStats();
+            }
+        }
+        
+        function addFighterToDOM(fighter) {
+            const statusMap = {
+                active: {text: '✅ Боевая готовность', class: 'status-active'},
+                reserve: {text: '⏸ В резерве', class: 'status-reserve'},
+                leave: {text: '✈️ В отпуске', class: 'status-reserve'}
             };
             
-            lF();
+            const status = statusMap[fighter.status] || statusMap.reserve;
+            let statusClass = status.class;
+            
+            if (fighter.unit === 'senezh') statusClass = 'status-senezh';
+            else if (fighter.unit === 'vagner') statusClass = 'status-vagner';
+            else if (fighter.unit === 'police') statusClass = 'status-police';
+            
+            const card = document.createElement('div');
+            card.className = 'person-card';
+            card.dataset.id = fighter.id;
+            
+            card.innerHTML = `
+                <div class="person-info">
+                    <h3>${fighter.name}</h3>
+                    <p>${fighter.position} | ${fighter.rank}</p>
+                    ${fighter.details ? `<p>${fighter.details}</p>` : ''}
+                </div>
+                <div class="status ${statusClass}">${status.text}</div>
+            `;
+            
+            if (document.getElementById('adminContent').style.display === 'block') {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = '🗑️';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.style.cssText = 'padding:5px 10px;font-size:0.8rem;margin-left:10px;';
+                deleteBtn.onclick = () => deleteFighter(fighter.id);
+                card.querySelector('.person-info').appendChild(deleteBtn);
+            }
+            
+            const containerId = {
+                command: 'commandList',
+                sap37: 'sap37List',
+                bmp382: 'bmp382List',
+                tank: 'tankList',
+                bba94: 'bba94List',
+                police: 'policeList',
+                senezh: 'senezhList',
+                vagner: 'vagnerList'
+            }[fighter.unit];
+            
+            if (containerId) {
+                document.getElementById(containerId).appendChild(card);
+            }
         }
-    })();
+        
+        async function addFighter() {
+            if (!supabaseClient) return;
+            
+            const name = document.getElementById('personName').value.trim();
+            const position = document.getElementById('personPosition').value.trim();
+            const rank = document.getElementById('personRank').value.trim();
+            
+            if (!name || !position || !rank) {
+                alert('Заполните ФИО, Должность и Звание');
+                return;
+            }
+            
+            const fighter = {
+                name: name,
+                position: position,
+                rank: rank,
+                unit: document.getElementById('personUnit').value,
+                status: document.getElementById('personStatus').value,
+                details: document.getElementById('personDetails').value.trim()
+            };
+            
+            const { data, error } = await supabaseClient
+                .from('fighters')
+                .insert([fighter])
+                .select();
+            
+            if (error) {
+                alert('Ошибка: ' + error.message);
+                return;
+            }
+            
+            if (data && data[0]) {
+                addFighterToDOM(data[0]);
+                updateStats();
+                
+                ['personName', 'personPosition', 'personRank', 'personDetails'].forEach(id => {
+                    document.getElementById(id).value = '';
+                });
+                
+                alert(`Боец ${name} добавлен`);
+            }
+        }
+        
+        async function deleteFighter(id) {
+            if (!supabaseClient || !confirm('Удалить бойца?')) return;
+            
+            const { error } = await supabaseClient
+                .from('fighters')
+                .delete()
+                .eq('id', id);
+            
+            if (error) {
+                alert('Ошибка удаления: ' + error.message);
+                return;
+            }
+            
+            document.querySelector(`.person-card[data-id="${id}"]`)?.remove();
+            updateStats();
+            alert('Боец удален');
+        }
+        
+        function updateStats() {
+            const cards = document.querySelectorAll('.person-card');
+            const activeCards = Array.from(cards).filter(card => 
+                card.querySelector('.status').textContent.includes('✅')
+            );
+            
+            document.getElementById('totalCount').textContent = cards.length;
+            document.getElementById('activeCount').textContent = activeCards.length;
+            document.getElementById('reserveCount').textContent = cards.length - activeCards.length;
+        }
+        
+        async function clearAll() {
+            if (!supabaseClient || !confirm('Удалить всех бойцов кроме командования?')) return;
+            
+            const { error } = await supabaseClient
+                .from('fighters')
+                .delete()
+                .neq('unit', 'command');
+            
+            if (error) {
+                alert('Ошибка: ' + error.message);
+                return;
+            }
+            
+            await loadFighters();
+            alert('Система очищена');
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.addEventListener('copy', (e) => {
+                e.preventDefault();
+                alert('Копирование запрещено!');
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.keyCode === 123 || 
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+                    (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
+                    (e.ctrlKey && e.keyCode === 85)) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            
+            initSupabase();
+        });
     </script>
 </body>
 </html>
